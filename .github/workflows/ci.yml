@@ -119,13 +119,13 @@ jobs:
       - name: Checkout do Repositório GitOps
         uses: actions/checkout@v4
         with:
-          repository: Pereira277/tc3-togglemaster
+          repository: deziobalbino/tc3-togglemaster
           token: ${{ secrets.GITOPS_PAT }}
           ref: main
 
       - name: Atualizar a tag da imagem no auth-deployment.yaml
         env:
-          AWS_ACCOUNT_ID: "133808368412"
+          AWS_ACCOUNT_ID: "923654441009"
           IMAGE_TAG: ${{ github.sha }}
         run: |
           NEW_IMAGE="${AWS_ACCOUNT_ID}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${IMAGE_TAG}"
