@@ -7,6 +7,7 @@ import (
 	"os"
 	_"github.com/jackc/pgx/v4/stdlib"
 	"github.com/joho/godotenv"
+	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 )
 
 // App struct (para injeção de dependência)
@@ -46,7 +47,10 @@ func main() {
 		DB:         db,
 		MasterKey:  masterKey,
 	}
-
+	
+	shutdown := initTracer()
+	defer shutdown(context.Background())
+	
 	// --- Rotas da API ---
 	mux := http.NewServeMux()
 	mux.HandleFunc("/health", app.healthHandler)
@@ -59,7 +63,7 @@ func main() {
 	mux.Handle("/admin/keys", app.masterKeyAuthMiddleware(http.HandlerFunc(app.createKeyHandler)))
 
 	log.Printf("Serviço de Autenticação (Go) rodando na porta %s", port)
-	if err := http.ListenAndServe(":"+port, mux); err != nil {
+	if err := http.ListenAndServe(":"+port, otelhttp.NewHandler(mux, "auth-service")); err != nil {
 		log.Fatal(err)
 	}
 }
