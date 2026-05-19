@@ -50,7 +50,11 @@ func main() {
 	}
 	
 	shutdown := initTracer()
-	defer shutdown(context.Background())
+	defer func() {
+    if err := shutdown(context.Background()); err != nil {
+        log.Printf("erro ao encerrar tracer: %v", err)
+    }
+}()
 	
 	// --- Rotas da API ---
 	mux := http.NewServeMux()
