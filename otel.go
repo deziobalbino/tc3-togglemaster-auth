@@ -20,9 +20,8 @@ func initTracer() func(context.Context) error {
         endpoint = "otel-collector.monitoring.svc.cluster.local:4317"
     }
 
-    conn, err := grpc.DialContext(context.Background(), endpoint,
+    conn, err := grpc.NewClient(endpoint,
     grpc.WithTransportCredentials(insecure.NewCredentials()),
-    grpc.WithBlock(),
     )
     if err != nil {
         log.Printf("aviso: não conectou ao OTel Collector: %v", err)
