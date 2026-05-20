@@ -125,7 +125,7 @@ jobs:
 
       - name: Atualizar a tag da imagem no auth-deployment.yaml
         env:
-          AWS_ACCOUNT_ID: "923654441009"
+          AWS_ACCOUNT_ID: "140722691041"
           IMAGE_TAG: ${{ github.sha }}
         run: |
           NEW_IMAGE="${AWS_ACCOUNT_ID}.dkr.ecr.${{ env.AWS_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:${IMAGE_TAG}"
